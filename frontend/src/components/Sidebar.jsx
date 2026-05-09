@@ -147,7 +147,7 @@ const Sidebar = ({user,isCollapsed,setIsCollapsed}) => {
               <Link className={cn(
                 sidebarStyles.footerLink.base,
                 isCollapsed && sidebarStyles.footerLink.collapsed,
-              )} to="https://www.hexagondigitalservices.com/contact">
+              )} to="https://dev-saxena.vercel.app/#contact" target="_blank">
 
                 <HelpCircle size={20} className="text-gray-500" />
                   {!isCollapsed && <span>Support</span>}
@@ -240,7 +240,7 @@ const Sidebar = ({user,isCollapsed,setIsCollapsed}) => {
                   </ul>
                 </div>
                 <div className={sidebarStyles.mobileFooter}>
-                  <Link to="https://www.hexagondigitalservices.com/contact" className={sidebarStyles.mobileFooterLink} onClick={() => setMobileOpen(false)}>
+                  <Link to="https://dev-saxena.vercel.app/#contact" className={sidebarStyles.mobileFooterLink} onClick={() => setMobileOpen(false)} target="_blank">
 
                   
                   <HelpCircle size={20} className='text-gray-500'/>
