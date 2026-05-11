@@ -6,6 +6,9 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Login from "./components/Login.jsx";
 import SignUp from "./components/SignUp.jsx";
 import axios from "axios";
+import Income from "./pages/income.jsx";
+import Expense from "./pages/expense.jsx";
+import Profile from "./pages/Profile.jsx";
 
 const API_URL="http://localhost:4000";
 //to get transaction from localstorage
@@ -198,7 +201,26 @@ const App = () => {
           </ProtectedRoute>}>
 
           <Route path="/" element={<Dashboard />} transactions={transactions} addTransaction={addTransaction} editTransaction={editTransaction} deleteTransaction={deleteTransaction} refreshTransactions={refreshTransactions}/>
+
+          <Route path="/income" element={
+            <Income   transactions={transactions} addTransaction={addTransaction} editTransaction={editTransaction} deleteTransaction={deleteTransaction} refreshTransactions={refreshTransactions} />
+          } />
+
+          <Route path="/expense" element={
+            <Expense   transactions={transactions} addTransaction={addTransaction} editTransaction={editTransaction} deleteTransaction={deleteTransaction} refreshTransactions={refreshTransactions} />
+          } />
+
+          <Route path="/profile" element={
+            <Profile user={user}
+            onUpdateProfile={updateUserData}
+            onLogout={handleLogout} />
+          }
+          />
         </Route>
+
+        <Route path="*" element={
+            <Navigate to={user?"/":"/login"} replace />
+          } />
       </Routes>
     </>
   );
