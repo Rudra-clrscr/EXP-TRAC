@@ -2,9 +2,11 @@ import User from '../models/userModel.js';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
-const JWT_SECRET='your_jwt_secret_here';
-const TOKEN_EXPIRES='24h';
+import dotenv from "dotenv";
+dotenv.config();
+import admin from "../config/firebaseAdmin.js";
+const JWT_SECRET = process.env.JWT_SECRET;
+const TOKEN_EXPIRES = "24h";
 
 const createToken=(userId)=>{
     return jwt.sign({id:userId},JWT_SECRET,{expiresIn:TOKEN_EXPIRES});
@@ -132,5 +134,48 @@ export async function changePassword(req,res){
     catch(err){
         console.error(err);
         res.status(500).json({success:false,message:"Server error"});
+    }
+}
+// google login
+export async function googleLogin(req, res) {
+    const { token } = req.body;
+    if (!token) {
+        return res.status(400).json({ success: false, message: "Token is required" });
+    }
+    
+    try {
+        // Verify the ID Token received from frontend
+        const decodedToken = await admin.auth().verifyIdToken(token);
+        const { email, name } = decodedToken;
+
+        // Find if user already exists in MongoDB
+        let user = await User.findOne({ email });
+
+        if (!user) {
+            // If user is new, register them with a random password
+            const hashedPassword = await bcrypt.hash(Math.random().toString(36), 10);
+            user = await User.create({
+                name: name || email.split("@")[0],
+                email: email,
+                password: hashedPassword
+            });
+        }
+
+        // Generate custom application JWT
+        const appToken = createToken(user._id);
+        
+        res.json({
+            success: true,
+            message: "User logged in successfully with Google",
+            token: appToken,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
+    } catch (error) {
+        console.error("Firebase token verification failed:", error);
+        res.status(401).json({ success: false, message: "Authentication failed" });
     }
 }

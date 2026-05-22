@@ -9,8 +9,9 @@ import axios from "axios";
 import Income from "./pages/income.jsx";
 import Expense from "./pages/expense.jsx";
 import Profile from "./pages/Profile.jsx";
+import { API_URL } from "./config.js";
 
-const API_URL="http://localhost:4000";
+// const API_URL="http://localhost:4000";
 //to get transaction from localstorage
 const getTransactionsFromStorage=()=>{
   const saved=localStorage.getItem("transactions");

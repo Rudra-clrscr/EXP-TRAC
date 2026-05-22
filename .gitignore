@@ -19,3 +19,6 @@ build/
 
 # Optional (your case)
 *.xlsx
+
+# Firebase Credentials
+backend/firebase-service-account.json

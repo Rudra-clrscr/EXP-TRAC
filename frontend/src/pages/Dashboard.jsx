@@ -9,10 +9,10 @@ import FinancialCard from '../components/FinancialCard.jsx';
 import { BarChart, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import GaugeCard from '../components/GaugeCard.jsx';
 import AddTransactionModal from '../components/Add.jsx';
-
-const API_BASE="http://localhost:4000/api";
+import { API_URL } from '../config.js';
+const API_BASE=`${API_URL}/api`;
 const getAuthHeader=()=>{
-  const token=localStorage.getItem("token") || localStorage.getItem("authToken");
+const token = localStorage.getItem("token") || sessionStorage.getItem("token") || localStorage.getItem("authToken");
   return token?{Authorization:`Bearer ${token}`}:{};
 }
 //convert date to ISO timeline
@@ -324,7 +324,7 @@ const Dashboard = () => {
           category:"Food",
         });setShowModal(false);
     } catch (error) {
-      console.error("failed to add Transaction: ",error?.response||err.message||err); 
+      console.error("failed to add Transaction: ",error?.response||error.message||error); 
     }finally{
       setLoading(false);
     }

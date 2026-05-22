@@ -30,8 +30,9 @@ import FinancialCard from "../components/FinancialCard";
 import { getTimeFrameRange, generateChartPoints } from "../components/Helpers";
 import { INCOME_COLORS, CATEGORY_ICONS_Inc } from "../assets/color";
 import { incomeStyles as styles } from "../assets/dummyStyles";
+import { API_URL } from "../config.js";
 
-const API_BASE = "http://localhost:4000/api";
+const API_BASE = `${API_URL}/api`;
 
 //helps in converting date to ISO
 function toIsoWithClientTime(dateValue) {
@@ -170,7 +171,7 @@ const Income = () => {
   const {
     transactions: outletTransactions = [],
     timeFrame = "monthly",
-    setTimeFrame = () => {},
+    setTimeFrame = () => { },
     refreshTransactions,
   } = useOutletContext();
 
@@ -201,7 +202,7 @@ const Income = () => {
   });
 
   const getAuthHeaders = useCallback(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
     return token ? { Authorization: `Bearer ${token}` } : {};
   }, []);
 
@@ -273,7 +274,7 @@ const Income = () => {
           : timeFrame === "yearly"
             ? d.date.getMonth() === transDate.getMonth()
             : d.date.getDate() === transDate.getDate() &&
-              d.date.getMonth() === transDate.getMonth(),
+            d.date.getMonth() === transDate.getMonth(),
       );
       point && (point.income += Math.round(Number(transaction.amount)));
     });
@@ -326,11 +327,11 @@ const Income = () => {
         ? Math.round(overview.averageIncome)
         : filteredTransactions.length
           ? Math.round(
-              filteredTransactions.reduce(
-                (s, t) => s + Math.round(Number(t.amount || 0)),
-                0,
-              ) / filteredTransactions.length,
-            )
+            filteredTransactions.reduce(
+              (s, t) => s + Math.round(Number(t.amount || 0)),
+              0,
+            ) / filteredTransactions.length,
+          )
           : 0,
     [overview.averageIncome, filteredTransactions],
   );

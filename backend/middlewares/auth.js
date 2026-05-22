@@ -1,6 +1,8 @@
 import User from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
-const JWT_SECRET='your_jwt_secret_here';
+import dotenv from "dotenv";
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function authMiddleware(req,res,next){
     //grab the token 
