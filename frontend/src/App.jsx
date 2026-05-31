@@ -6,8 +6,8 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Login from "./components/Login.jsx";
 import SignUp from "./components/SignUp.jsx";
 import axios from "axios";
-import Income from "./pages/income.jsx";
-import Expense from "./pages/expense.jsx";
+import Income from "./pages/Income.jsx";
+import Expense from "./pages/Expense.jsx";
 import Profile from "./pages/Profile.jsx";
 import { API_URL } from "./config.js";
 
