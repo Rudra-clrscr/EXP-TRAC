@@ -60,9 +60,8 @@ export async function updateIncome(req, res) {
 
 //to delete income
 export async function deleteIncome(req, res) {
-    const userId = req.user._id;
     try {
-        const income = await incomeModel.findOneAndDelete({ _id: req.params.id, userId });
+        const income = await incomeModel.findByIdAndDelete({ _id: req.params.id });
         if (!income) {
             return res.status(404).json({ success: false, message: "Income not found" });
         }
