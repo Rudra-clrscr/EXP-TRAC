@@ -15,8 +15,9 @@ import {
   Moon, 
   Sun, 
   Layout, 
-  Eye, 
-  FileSpreadsheet 
+  FileSpreadsheet,
+  ArrowUp,
+  ArrowDown
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -99,170 +100,180 @@ const Landing = ({ user, onLogout }) => {
   return (
     <div className="min-h-screen text-foreground transition-colors duration-300">
       
-      {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] pointer-events-none overflow-hidden z-0 opacity-30">
-        <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full bg-gradient-to-r from-primary-500/30 to-indigo-500/20 blur-[120px] animate-pulse duration-[8s]" />
-        <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/30 blur-[100px] animate-pulse duration-[6s]" />
-      </div>
-
-      {/* Header/Navbar */}
-      <nav className="sticky top-0 z-40 bg-background/70 backdrop-blur-md border-b border-border transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-          
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-400 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-primary-500/20 group-hover:scale-105 transition-transform duration-200">
-              <span className="font-extrabold text-lg">ET</span>
-            </div>
-            <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
-              EXP-<span className="bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">TRAC</span>
-            </span>
-          </Link>
-
-          {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-8 font-medium">
-            <a href="#features" className="text-gray-500 hover:text-foreground transition-colors">Features</a>
-            <a href="#customize" className="text-gray-500 hover:text-foreground transition-colors">Customize</a>
-            <a href="#faq" className="text-gray-500 hover:text-foreground transition-colors">FAQ</a>
-          </div>
-
-          {/* Auth Button CTAs */}
-          <div className="hidden md:flex items-center gap-4">
-            {user ? (
-              <>
-                <button 
-                  onClick={() => navigate('/dashboard')}
-                  className="px-5 py-2.5 rounded-xl font-bold bg-primary-500 text-white shadow-lg shadow-primary-500/20 hover:bg-primary-600 hover:shadow-primary-600/30 transition-all flex items-center gap-2 group cursor-pointer"
-                >
-                  Go to Dashboard
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-                <button 
-                  onClick={onLogout}
-                  className="px-4 py-2.5 rounded-xl font-bold text-gray-500 hover:text-foreground hover:bg-white/5 border border-transparent hover:border-border transition-all cursor-pointer"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link 
-                  to="/login"
-                  className="px-4 py-2.5 rounded-xl font-bold text-gray-500 hover:text-foreground hover:bg-white/5 transition-all"
-                >
-                  Sign In
-                </Link>
-                <Link 
-                  to="/signup"
-                  className="px-5 py-2.5 rounded-xl font-bold bg-primary-500 text-white shadow-lg shadow-primary-500/20 hover:bg-primary-600 hover:shadow-primary-600/30 transition-all cursor-pointer"
-                >
-                  Create Account
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button 
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-xl text-gray-500 hover:text-foreground hover:bg-white/5 transition-colors"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+      {/* Immersive Background Video Wrapper (Navbar + Hero Fold) */}
+      <div className="relative min-h-screen flex flex-col overflow-hidden">
+        
+        {/* Full-bleed video background */}
+        <div className="absolute inset-0 w-full h-full pointer-events-none select-none overflow-hidden z-0">
+          <video 
+            src="/vid/can_we_have_an_animation_.mp4" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            poster="/vid/Gemini_Generated_Image_5gqytf5gqytf5gqy.png"
+            className="w-full h-full object-cover opacity-60 dark:opacity-40"
+          />
+          {/* Deep dark gradient mask for high text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/65 to-background z-10" />
         </div>
 
-        {/* Mobile Menu Panel */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-border bg-background transition-colors duration-300 px-6 py-6 space-y-4"
-            >
-              <a 
-                href="#features" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-lg font-medium text-gray-500 hover:text-foreground"
-              >
-                Features
-              </a>
-              <a 
-                href="#customize" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-lg font-medium text-gray-500 hover:text-foreground"
-              >
-                Customize
-              </a>
-              <a 
-                href="#faq" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-lg font-medium text-gray-500 hover:text-foreground"
-              >
-                FAQ
-              </a>
-              <div className="pt-4 border-t border-border flex flex-col gap-3">
-                {user ? (
-                  <>
-                    <button 
-                      onClick={() => { setMobileMenuOpen(false); navigate('/dashboard'); }}
-                      className="w-full py-3 rounded-xl font-bold bg-primary-500 text-white text-center shadow-lg"
-                    >
-                      Go to Dashboard
-                    </button>
-                    <button 
-                      onClick={() => { setMobileMenuOpen(false); onLogout(); }}
-                      className="w-full py-3 rounded-xl font-bold border border-border text-center"
-                    >
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link 
-                      to="/login"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="w-full py-3 rounded-xl font-bold border border-border text-center"
-                    >
-                      Sign In
-                    </Link>
-                    <Link 
-                      to="/signup"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="w-full py-3 rounded-xl font-bold bg-primary-500 text-white text-center shadow-lg"
-                    >
-                      Create Account
-                    </Link>
-                  </>
-                )}
+        {/* Header/Navbar (relative z-20 to sit on top of mask) */}
+        <nav className="relative z-20 bg-background/20 backdrop-blur-md border-b border-white/5 transition-colors duration-300">
+          <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-400 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-primary-500/20 group-hover:scale-105 transition-transform duration-200">
+                <span className="font-extrabold text-lg">ET</span>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+              <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
+                EXP-<span className="bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">TRAC</span>
+              </span>
+            </Link>
 
-      {/* Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-6 pt-12 pb-24 md:py-24 flex flex-col lg:flex-row gap-16 items-center z-10">
-        
-        {/* Left Side Info */}
-        <div className="flex-1 space-y-8 text-center lg:text-left">
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-border bg-surface/50 backdrop-blur-sm shadow-sm">
-            <Sparkles className="w-4 h-4 text-primary-500 animate-pulse" />
-            <span className="text-xs font-semibold text-gray-600 tracking-wide uppercase">Upgrade your wealth engine</span>
+            {/* Desktop Nav Links */}
+            <div className="hidden md:flex items-center gap-8 font-medium">
+              <a href="#features" className="text-gray-300 hover:text-foreground transition-colors">Features</a>
+              <a href="#customize" className="text-gray-300 hover:text-foreground transition-colors">Customize</a>
+              <a href="#faq" className="text-gray-300 hover:text-foreground transition-colors">FAQ</a>
+            </div>
+
+            {/* Auth Button CTAs */}
+            <div className="hidden md:flex items-center gap-4">
+              {user ? (
+                <>
+                  <button 
+                    onClick={() => navigate('/dashboard')}
+                    className="px-5 py-2.5 rounded-xl font-bold bg-primary-500 text-white shadow-lg shadow-primary-500/20 hover:bg-primary-600 hover:shadow-primary-600/30 transition-all flex items-center gap-2 group cursor-pointer"
+                  >
+                    Go to Dashboard
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                  <button 
+                    onClick={onLogout}
+                    className="px-4 py-2.5 rounded-xl font-bold text-gray-300 hover:text-foreground hover:bg-white/5 border border-transparent hover:border-border transition-all cursor-pointer"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    to="/login"
+                    className="px-4 py-2.5 rounded-xl font-bold text-gray-300 hover:text-foreground hover:bg-white/5 transition-all"
+                  >
+                    Sign In
+                  </Link>
+                  <Link 
+                    to="/signup"
+                    className="px-5 py-2.5 rounded-xl font-bold bg-primary-500 text-white shadow-lg shadow-primary-500/20 hover:bg-primary-600 hover:shadow-primary-600/30 transition-all cursor-pointer"
+                  >
+                    Create Account
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-xl text-gray-300 hover:text-foreground hover:bg-white/5 transition-colors"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-foreground">
+          {/* Mobile Menu Panel */}
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="md:hidden border-t border-border bg-background transition-colors duration-300 px-6 py-6 space-y-4"
+              >
+                <a 
+                  href="#features" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-lg font-medium text-gray-500 hover:text-foreground"
+                >
+                  Features
+                </a>
+                <a 
+                  href="#customize" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-lg font-medium text-gray-500 hover:text-foreground"
+                >
+                  Customize
+                </a>
+                <a 
+                  href="#faq" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-lg font-medium text-gray-500 hover:text-foreground"
+                >
+                  FAQ
+                </a>
+                <div className="pt-4 border-t border-border flex flex-col gap-3">
+                  {user ? (
+                    <>
+                      <button 
+                        onClick={() => { setMobileMenuOpen(false); navigate('/dashboard'); }}
+                        className="w-full py-3 rounded-xl font-bold bg-primary-500 text-white text-center shadow-lg"
+                      >
+                        Go to Dashboard
+                      </button>
+                      <button 
+                        onClick={() => { setMobileMenuOpen(false); onLogout(); }}
+                        className="w-full py-3 rounded-xl font-bold border border-border text-center"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link 
+                        to="/login"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="w-full py-3 rounded-xl font-bold border border-border text-center"
+                      >
+                        Sign In
+                      </Link>
+                      <Link 
+                        to="/signup"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="w-full py-3 rounded-xl font-bold bg-primary-500 text-white text-center shadow-lg"
+                      >
+                        Create Account
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </nav>
+
+        {/* Hero Content Section (relative z-20 to sit on top of mask) */}
+        <header className="relative z-20 max-w-5xl mx-auto px-6 flex-1 flex flex-col items-center justify-center text-center py-20 md:py-28 space-y-10">
+          
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md shadow-sm">
+            <Sparkles className="w-4 h-4 text-primary-400 animate-pulse" />
+            <span className="text-xs font-semibold text-gray-300 tracking-wide uppercase">Upgrade your wealth engine</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-foreground max-w-4xl">
             Take Control of Your Wealth With{" "}
             <span className={`bg-gradient-to-r ${getThemeGradient()} bg-clip-text text-transparent`}>
               Infinite Clarity
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0">
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl leading-relaxed">
             A premium personal expense analytics dashboard engineered to trace your financials with modern styling, fluid animated backgrounds, and full interactive control.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
             {user ? (
               <button 
                 onClick={() => navigate('/dashboard')}
@@ -281,7 +292,7 @@ const Landing = ({ user, onLogout }) => {
                 </Link>
                 <Link 
                   to="/login"
-                  className="w-full sm:w-auto px-8 py-4 rounded-xl font-extrabold text-lg border border-border bg-surface/40 hover:bg-white/5 hover:border-foreground/20 transition-all text-center"
+                  className="w-full sm:w-auto px-8 py-4 rounded-xl font-extrabold text-lg border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/20 transition-all text-center text-white"
                 >
                   Live Demo
                 </Link>
@@ -290,52 +301,24 @@ const Landing = ({ user, onLogout }) => {
           </div>
 
           {/* Quick Metrics */}
-          <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border max-w-md mx-auto lg:mx-0 text-left">
+          <div className="grid grid-cols-3 gap-6 md:gap-12 pt-10 border-t border-white/5 max-w-lg w-full">
             <div>
               <p className="text-2xl md:text-3xl font-extrabold text-foreground">10k+</p>
-              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mt-1">Active Users</p>
+              <p className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-wider mt-1">Active Users</p>
             </div>
             <div>
               <p className="text-2xl md:text-3xl font-extrabold text-foreground">$4.8M+</p>
-              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mt-1">Tracked</p>
+              <p className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-wider mt-1">Tracked</p>
             </div>
             <div>
               <p className="text-2xl md:text-3xl font-extrabold text-foreground">99.9%</p>
-              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mt-1">Uptime</p>
+              <p className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-wider mt-1">Uptime</p>
             </div>
           </div>
-        </div>
 
-        {/* Right Side Video Mockup */}
-        <div className="flex-1 w-full max-w-2xl relative">
-          
-          {/* Decorative Backglow */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-primary-500/20 to-indigo-500/25 rounded-[2.5rem] blur-[30px] -z-10 scale-95" />
+        </header>
 
-          {/* Premium Device Mockup Frame */}
-          <div className="bg-surface rounded-3xl p-3 shadow-2xl border border-border overflow-hidden">
-            <div className="flex items-center gap-2 mb-3 px-3">
-              <div className="w-3.5 h-3.5 rounded-full bg-rose-500/80" />
-              <div className="w-3.5 h-3.5 rounded-full bg-amber-500/80" />
-              <div className="w-3.5 h-3.5 rounded-full bg-emerald-500/80" />
-              <div className="w-full flex justify-center text-xs font-medium text-gray-500 truncate select-none pl-4">
-                http://localhost:5173/dashboard
-              </div>
-            </div>
-            <div className="rounded-2xl overflow-hidden border border-border relative bg-[#09070f] aspect-[16/10]">
-              <video 
-                src="/vid/can_we_have_an_animation_.mp4" 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
-                poster="/vid/Gemini_Generated_Image_5gqytf5gqytf5gqy.png"
-                className="w-full h-full object-cover select-none"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
 
       {/* Features Section */}
       <section id="features" className="max-w-7xl mx-auto px-6 py-24 border-t border-border scroll-mt-20">
